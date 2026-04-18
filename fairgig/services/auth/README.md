@@ -21,6 +21,11 @@ FastAPI microservice for registration, login, token refresh, and profile managem
 
 `uvicorn main:app --port 8001 --reload`
 
+## Troubleshooting
+
+- If you see `trapped error reading bcrypt version`, reinstall auth dependencies to pick up the pinned compatible bcrypt build:
+  - `pip install -r requirements.txt --upgrade --force-reinstall`
+
 ## Endpoints
 
 - `POST /register`
