@@ -1,0 +1,69 @@
+{
+  "info": {
+    "name": "FairGig API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {"name": "Register", "request": {"method": "POST", "url": "{{AUTH_URL}}/register"}},
+        {"name": "Login", "request": {"method": "POST", "url": "{{AUTH_URL}}/login"}},
+        {"name": "Refresh", "request": {"method": "POST", "url": "{{AUTH_URL}}/refresh"}},
+        {"name": "Get Me", "request": {"method": "GET", "url": "{{AUTH_URL}}/me"}}
+      ]
+    },
+    {
+      "name": "Earnings",
+      "item": [
+        {"name": "Log Shift", "request": {"method": "POST", "url": "{{EARNINGS_URL}}/shifts"}},
+        {"name": "Get Shifts", "request": {"method": "GET", "url": "{{EARNINGS_URL}}/shifts"}},
+        {"name": "Bulk Import", "request": {"method": "POST", "url": "{{EARNINGS_URL}}/shifts/bulk"}},
+        {"name": "Upload Screenshot", "request": {"method": "POST", "url": "{{EARNINGS_URL}}/shifts/:id/screenshot"}},
+        {"name": "Verify Screenshot", "request": {"method": "POST", "url": "{{EARNINGS_URL}}/verification/:id/review"}}
+      ]
+    },
+    {
+      "name": "Anomaly",
+      "item": [
+        {"name": "Detect", "request": {"method": "POST", "url": "{{ANOMALY_URL}}/detect"}},
+        {"name": "Health", "request": {"method": "GET", "url": "{{ANOMALY_URL}}/health"}},
+        {"name": "Sample Payload", "request": {"method": "GET", "url": "{{ANOMALY_URL}}/sample-payload"}}
+      ]
+    },
+    {
+      "name": "Grievance",
+      "item": [
+        {"name": "Create Complaint", "request": {"method": "POST", "url": "{{GRIEVANCE_URL}}/complaints"}},
+        {"name": "List Complaints", "request": {"method": "GET", "url": "{{GRIEVANCE_URL}}/complaints"}},
+        {"name": "Update Status", "request": {"method": "PATCH", "url": "{{GRIEVANCE_URL}}/complaints/:id/status"}},
+        {"name": "Find Similar", "request": {"method": "GET", "url": "{{GRIEVANCE_URL}}/complaints/:id/similar"}},
+        {"name": "Create Cluster", "request": {"method": "POST", "url": "{{GRIEVANCE_URL}}/clusters"}}
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {"name": "Commission Trends", "request": {"method": "GET", "url": "{{ANALYTICS_URL}}/analytics/commission-trends"}},
+        {"name": "Worker Median", "request": {"method": "GET", "url": "{{ANALYTICS_URL}}/analytics/worker-median"}},
+        {"name": "Vulnerability Flags", "request": {"method": "GET", "url": "{{ANALYTICS_URL}}/analytics/vulnerability-flags"}},
+        {"name": "Top Complaints", "request": {"method": "GET", "url": "{{ANALYTICS_URL}}/analytics/top-complaints"}}
+      ]
+    },
+    {
+      "name": "Certificate",
+      "item": [
+        {"name": "Generate", "request": {"method": "POST", "url": "{{CERTIFICATE_URL}}/certificate"}},
+        {"name": "Preview", "request": {"method": "GET", "url": "{{CERTIFICATE_URL}}/certificate/preview/:worker_id"}}
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "AUTH_URL", "value": "http://localhost:8001"},
+    {"key": "EARNINGS_URL", "value": "http://localhost:8002"},
+    {"key": "ANOMALY_URL", "value": "http://localhost:8003"},
+    {"key": "GRIEVANCE_URL", "value": "http://localhost:8004"},
+    {"key": "ANALYTICS_URL", "value": "http://localhost:8005"},
+    {"key": "CERTIFICATE_URL", "value": "http://localhost:8006"}
+  ]
+}

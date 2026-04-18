@@ -1,0 +1,9 @@
+{
+  "worker_id": "worker-drop-001",
+  "shifts": [
+    {"date": "2026-01-05", "platform": "Bykea", "hours_worked": 8, "gross_earned": 1200, "platform_deductions": 240, "net_received": 960},
+    {"date": "2026-01-10", "platform": "Bykea", "hours_worked": 8, "gross_earned": 1300, "platform_deductions": 260, "net_received": 1040},
+    {"date": "2026-02-05", "platform": "Bykea", "hours_worked": 8, "gross_earned": 700, "platform_deductions": 140, "net_received": 560},
+    {"date": "2026-02-10", "platform": "Bykea", "hours_worked": 8, "gross_earned": 650, "platform_deductions": 130, "net_received": 520}
+  ]
+}
