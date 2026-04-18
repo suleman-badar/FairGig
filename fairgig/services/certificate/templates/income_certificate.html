@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FairGig Income Certificate</title>
+    <link rel="stylesheet" href="/static/certificate.css" />
+  </head>
+  <body>
+    <div class="certificate">
+      <h1>FairGig Income Certificate</h1>
+      <p>
+        Generated: {{ generated_at.strftime('%Y-%m-%d %H:%M UTC') }} |
+        Certificate ID: {{ certificate_id }}
+      </p>
+
+      <p>
+        Worker: {{ worker.full_name }} | Phone: {{ worker.phone }} | Category:
+        {{ worker.category }} | Zone: {{ worker.city_zone }}
+      </p>
+      <p>Period: {{ from_date }} to {{ to_date }}</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Platform</th>
+            <th>Shifts</th>
+            <th>Hours</th>
+            <th>Gross Earned</th>
+            <th>Deductions</th>
+            <th>Net Received</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for platform, row in platform_rows.items() %}
+          <tr>
+            <td>{{ platform }}</td>
+            <td>{{ row.shifts }}</td>
+            <td>{{ '%.1f'|format(row.hours) }}h</td>
+            <td>Rs. {{ '{:,.0f}'.format(row.gross) }}</td>
+            <td>Rs. {{ '{:,.0f}'.format(row.deductions) }}</td>
+            <td>Rs. {{ '{:,.0f}'.format(row.net) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Total</th>
+            <th>{{ total.shifts }}</th>
+            <th>{{ '%.1f'|format(total.hours) }}h</th>
+            <th>Rs. {{ '{:,.0f}'.format(total.gross) }}</th>
+            <th>Rs. {{ '{:,.0f}'.format(total.deductions) }}</th>
+            <th>Rs. {{ '{:,.0f}'.format(total.net) }}</th>
+          </tr>
+        </tfoot>
+      </table>
+
+      <p>
+        Verification Summary: {{ verified_count }} of {{ total_count }} shifts
+        verified by FairGig.
+      </p>
+      <p>
+        This certificate is generated from worker-reported earnings. {{
+        verified_count }} shifts were verified by a FairGig reviewer against
+        platform screenshots. FairGig does not guarantee the accuracy of
+        unverified entries.
+      </p>
+    </div>
+  </body>
+</html>
