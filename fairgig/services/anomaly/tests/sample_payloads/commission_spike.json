@@ -1,0 +1,9 @@
+{
+  "worker_id": "worker-spike-001",
+  "shifts": [
+    {"date": "2026-02-01", "platform": "Careem", "hours_worked": 8, "gross_earned": 1500, "platform_deductions": 300, "net_received": 1200},
+    {"date": "2026-02-02", "platform": "Careem", "hours_worked": 8, "gross_earned": 1450, "platform_deductions": 290, "net_received": 1160},
+    {"date": "2026-02-03", "platform": "Careem", "hours_worked": 8, "gross_earned": 1400, "platform_deductions": 280, "net_received": 1120},
+    {"date": "2026-02-04", "platform": "Careem", "hours_worked": 8, "gross_earned": 1600, "platform_deductions": 900, "net_received": 700}
+  ]
+}

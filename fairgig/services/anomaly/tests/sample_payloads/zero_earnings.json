@@ -1,0 +1,8 @@
+{
+  "worker_id": "worker-zero-001",
+  "shifts": [
+    {"date": "2026-03-01", "platform": "Foodpanda", "hours_worked": 7, "gross_earned": 1300, "platform_deductions": 390, "net_received": 910},
+    {"date": "2026-03-02", "platform": "Foodpanda", "hours_worked": 6, "gross_earned": 1200, "platform_deductions": 360, "net_received": 840},
+    {"date": "2026-03-03", "platform": "Foodpanda", "hours_worked": 5, "gross_earned": 0, "platform_deductions": 0, "net_received": 0}
+  ]
+}
