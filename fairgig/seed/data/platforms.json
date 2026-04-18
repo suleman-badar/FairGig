@@ -1,0 +1,8 @@
+[
+  {"name": "Careem", "commission_min": 20, "commission_max": 30},
+  {"name": "Bykea", "commission_min": 18, "commission_max": 28},
+  {"name": "Foodpanda", "commission_min": 25, "commission_max": 35},
+  {"name": "Freelance_Upwork", "commission_min": 5, "commission_max": 20},
+  {"name": "Freelance_Fiverr", "commission_min": 10, "commission_max": 25},
+  {"name": "Domestic", "commission_min": 0, "commission_max": 5}
+]
