@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum Role {
+  worker
+  verifier
+  analyst
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  name         String
+  username     String @unique
+  email        String @unique
+  passwordHash String
+  role         Role   @default(worker)
+
+  earnings      Earning[]      @relation("WorkerEarnings")
+  verifications Verification[] @relation("VerifierAssignments")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Platform {
+  foodpanda
+  indrive
+  yango
+  other
+}
+
+model Earning {
+  id Int @id @default(autoincrement())
+
+  workerId Int
+  worker   User @relation("WorkerEarnings", fields: [workerId], references: [id])
+
+  amount      Int      @default(0)
+  platform    Platform @default(other)
+  hoursWorked Int
+  deductions  Int      @default(0)
+  date        DateTime @default(now())
+
+  verifications Verification[] @relation("VerificationStatuses")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  pending
+  approved
+  rejected
+}
+
+model Verification {
+  id Int @id @default(autoincrement())
+
+  earningId Int
+  earning   Earning @relation("VerificationStatuses", fields: [earningId], references: [id])
+
+  verifierId Int
+  verifier   User @relation("VerifierAssignments", fields: [verifierId], references: [id])
+
+  status          Status  @default(pending)
+  submissionProof String
+  comment         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
