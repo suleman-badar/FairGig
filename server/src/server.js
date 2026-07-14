@@ -1,5 +1,5 @@
 import app from "./app.js"
-import connectDB from "./config/db.js"
+import connectDB from "./libs/prisma.js"
 import dns from "node:dns/promises";
 dns.setServers(["1.1.1.1"]);
 
