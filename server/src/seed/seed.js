@@ -1,52 +1,68 @@
 import prisma from "../libs/prisma.js";
+import bcrypt from "bcrypt";
 
 async function main() {
-  // ---------- Users ----------
-  const worker = await prisma.user.upsert({
-    where: { email: "admin@example.com" },
+  const passwordHash = await bcrypt.hash("password123", 10);
+
+  // --------------------
+  // Users
+  // --------------------
+
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@fairgig.com" },
     update: {
       name: "Admin",
-      username : "admin",
-      role: "worker"
+      role: "admin",
     },
     create: {
       name: "Admin",
-      username: "admin",
-      email: "admin@example.com",
-      passwordHash: "admin",
+      email: "admin@fairgig.com",
+      passwordHash,
+      role: "admin",
+    },
+  });
+
+  const worker = await prisma.user.upsert({
+    where: { email: "worker@fairgig.com" },
+    update: {},
+    create: {
+      name: "Worker",
+      email: "worker@fairgig.com",
+      passwordHash,
       role: "worker",
     },
   });
 
   const verifier = await prisma.user.upsert({
-    where: { email: "ali@example.com" },
+    where: { email: "verifier@fairgig.com" },
     update: {},
     create: {
-      name: "Ali",
-      username: "ali",
-      email: "ali@example.com",
-      passwordHash: "hashed_password_2",
+      name: "Verifier",
+      email: "verifier@fairgig.com",
+      passwordHash,
       role: "verifier",
     },
   });
 
-  await prisma.user.upsert({
-    where: { email: "ahmed@example.com" },
+  const analyst = await prisma.user.upsert({
+    where: { email: "analyst@fairgig.com" },
     update: {},
     create: {
-      name: "Ahmed",
-      username: "ahmed",
-      email: "ahmed@example.com",
-      passwordHash: "hashed_password_3",
+      name: "Analyst",
+      email: "analyst@fairgig.com",
+      passwordHash,
       role: "analyst",
     },
   });
 
-  // ---------- Earnings ----------
+  // --------------------
+  // Earnings
+  // --------------------
+
   const earning1 = await prisma.earning.create({
     data: {
       workerId: worker.id,
-      amount: 2500,
+      amount: 3500,
       platform: "foodpanda",
       hoursWorked: 8,
       deductions: 100,
@@ -56,39 +72,55 @@ async function main() {
   const earning2 = await prisma.earning.create({
     data: {
       workerId: worker.id,
-      amount: 1800,
+      amount: 2400,
       platform: "indrive",
       hoursWorked: 6,
       deductions: 50,
     },
   });
 
-  // ---------- Verifications ----------
+  // --------------------
+  // Verifications
+  // --------------------
+
   await prisma.verification.createMany({
     data: [
       {
         earningId: earning1.id,
         verifierId: verifier.id,
         status: "approved",
-        submissionProof: "receipt_foodpanda_001.jpg",
-        comment: "Everything looks correct.",
+        submissionProof: "foodpanda_receipt.jpg",
+        comment: "Verified successfully.",
       },
       {
         earningId: earning2.id,
         verifierId: verifier.id,
         status: "pending",
-        submissionProof: "receipt_indrive_001.jpg",
+        submissionProof: "indrive_receipt.jpg",
         comment: null,
       },
     ],
   });
 
-  console.log("✅ Database seeded successfully!");
+  // --------------------
+  // Role Request
+  // --------------------
+
+  await prisma.roleRequest.create({
+    data: {
+      userId: worker.id,
+      requestedRole: "verifier",
+      status: "pending",
+    },
+  });
+
+  console.log("✅ Database seeded successfully.");
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();

@@ -11,25 +11,51 @@ datasource db {
   provider  = "postgresql"
 }
 
+
+// USING SOFT DELETE
+
 enum Role {
   worker
   verifier
   analyst
+  admin
 }
 
 model User {
   id           Int    @id @default(autoincrement())
   name         String
-  username     String @unique
   email        String @unique
-  passwordHash String
+  passwordHash String @unique
   role         Role   @default(worker)
 
   earnings      Earning[]      @relation("WorkerEarnings")
   verifications Verification[] @relation("VerifierAssignments")
+  roleRequests RoleRequest[]   @relation("UserRequests")
+  refreshTokens RefreshToken[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+}
+
+model RefreshToken {
+  id          Int      @id @default(autoincrement())
+
+  jti         String    @unique
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  tokenHash   String
+
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  lastUsedAt   DateTime @updatedAt
+  revokedAt   DateTime?
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 enum Platform {
@@ -43,18 +69,22 @@ model Earning {
   id Int @id @default(autoincrement())
 
   workerId Int
-  worker   User @relation("WorkerEarnings", fields: [workerId], references: [id])
+  worker   User @relation("WorkerEarnings",fields: [workerId],references: [id])
 
   amount      Int      @default(0)
   platform    Platform @default(other)
   hoursWorked Int
   deductions  Int      @default(0)
-  date        DateTime @default(now())
+  earnedDate  DateTime @default(now())
 
   verifications Verification[] @relation("VerificationStatuses")
 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@index([workerId])
 }
 
 enum Status {
@@ -67,7 +97,7 @@ model Verification {
   id Int @id @default(autoincrement())
 
   earningId Int
-  earning   Earning @relation("VerificationStatuses", fields: [earningId], references: [id])
+  earning   Earning @relation("VerificationStatuses",fields: [earningId],references: [id])
 
   verifierId Int
   verifier   User @relation("VerifierAssignments", fields: [verifierId], references: [id])
@@ -76,6 +106,33 @@ model Verification {
   submissionProof String
   comment         String?
 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@index([earningId])
+  @@index([verifierId])
+}
+
+enum RequestStatus {
+  pending
+  approved
+  rejected
+}
+
+model RoleRequest {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user User @relation("UserRequests",fields: [userId],references: [id])
+
+  requestedRole Role
+  status RequestStatus @default(pending)
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
